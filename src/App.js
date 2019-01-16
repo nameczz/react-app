@@ -1,30 +1,35 @@
-import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
-import {createStore} from 'redux';
-console.log(createStore)
-
+import React, { Component } from 'react'
+import { Button, List } from 'antd-mobile'
 class App extends Component {
-  render() {
+  constructor (props) {
+    super(props)
+    this.state = {
+      List: ['Curry', 'Lebron', 'Durrant']
+    }
+  }
+
+  addList () {
+    // this 绑定的绑定
+    this.setState({
+      List: [...this.state.List, 'Kobe']
+    })
+  }
+
+  render () {
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
+      <div>
+        <p>First React App</p>
+        <Button type='primary' onClick={()=>this.addList()}>
+          Add List
+        </Button>
+        <List renderHeader={() => 'NBA Player'}>
+          {this.state.List.map(val => {
+            return <List.Item key={val}>{val}</List.Item>
+          })}
+        </List>
       </div>
-    );
+    )
   }
 }
 
-export default App;
+export default App
