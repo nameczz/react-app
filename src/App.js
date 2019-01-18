@@ -2,12 +2,19 @@ import React, { Component } from 'react'
 import { Button, List } from 'antd-mobile'
 import { connect } from 'react-redux'
 import { add, remove, addAsync } from './index.redux'
-
+import { login } from './auth.redux'
 @connect(
   state => {
-    return { num: state }
+    return {
+      num: state.counter
+    }
   },
-  { add, remove, addAsync }
+  {
+    add,
+    remove,
+    addAsync,
+    login
+  }
 )
 class App extends Component {
   constructor (props) {
@@ -26,10 +33,12 @@ class App extends Component {
   render () {
     return (
       <div>
-        <p>First React App</p>
-        <p>Now is {this.props.num} </p>
-        <Button onClick={this.props.add}>Add Number</Button>
-        <Button type='primary' onClick={this.props.addAsync}>AddAsync Number</Button>
+        <p> First React App </p> <p> Now is {this.props.num} </p>
+        <Button onClick={this.props.login}>Login</Button>
+        <Button onClick={this.props.add}> Add Number </Button>
+        <Button type='primary' onClick={this.props.addAsync}>
+          AddAsync Number
+        </Button>
         <Button type='warning' onClick={this.props.remove}>
           Remove Number
         </Button>
