@@ -1,10 +1,11 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import { createStore, applyMiddleware, compose } from 'redux'
+import AuthRoute from './components/authRoute/index'
 import thunk from 'redux-thunk'
-import App from './App'
-import Data from './page/data'
-import { BrowserRouter, Route, Link } from 'react-router-dom'
+import Login from './pages/login'
+import Register from './pages/register'
+import { BrowserRouter, Route } from 'react-router-dom'
 import Reducers from './reducers'
 import { Provider } from 'react-redux'
 const store = createStore(
@@ -19,16 +20,9 @@ ReactDOM.render(
   <Provider store={store}>
     <BrowserRouter>
       <div>
-        <ul>
-          <li>
-            <Link to='/'>主页面</Link>
-          </li>
-          <li>
-            <Link to='/data'>Data page</Link>
-          </li>
-        </ul>
-        <Route path='/' exact component={App} />
-        <Route path='/data' component={Data} />
+        <AuthRoute />
+        <Route path='/login' component={Login} />
+        <Route path='/register' component={Register} />
       </div>
     </BrowserRouter>
   </Provider>,

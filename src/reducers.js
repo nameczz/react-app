@@ -1,5 +1,10 @@
-import { combineReducers } from 'redux'
-import { counter } from './index.redux'
-import { authCheck } from './auth.redux'
+import {
+    combineReducers
+} from 'redux'
+import {
+    user
+} from './redux/user.redux'
 
-export default combineReducers({ counter, authCheck })
+export default combineReducers({
+    user
+})
