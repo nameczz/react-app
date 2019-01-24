@@ -1,15 +1,110 @@
 const express = require('express')
 const Router = express.Router()
+const util = require('utility')
 const model = require('./model')
 const User = model.getModel('user')
+const _filter = {
+  pwd: 0,
+  __v: 0
+}
+Router.post('/register', (req, res) => {
+  console.log(req.body)
+  const {
+    username,
+    pwd,
+    type
+  } = req.body
+  User.findOne({
+      username
+    },
+    (err, doc) => {
+      if (doc) {
+        return res.json({
+          code: 1,
+          msg: '用户名已存在'
+        })
+      }
+      const userModel = new User({
+        username,
+        pwd: saltMd5(pwd),
+        type
+      })
+      userModel.save((err, doc) => {
+        if (err) return res.json({
+          code: 1,
+          msg: '后端错误'
+        })
+        res.cookie('userId', doc._id)
+        const {
+          username,
+          _id,
+          type
+        } = doc
+        return res.json({
+          code: 0,
+          data: {
+            username,
+            _id,
+            type
+          }
+        })
+      })
+
+    }
+  )
+})
+Router.post('/login', (req, res) => {
+  const {
+    username,
+    pwd
+  } = req.body
+  User.find({
+      username,
+      pwd: saltMd5(pwd)
+    }, _filter,
+    (err, doc) => {
+      if (doc.length) {
+        res.cookie('userId', doc[0]._id)
+        return res.json({
+          code: 0,
+          data: doc[0]
+        })
+      }
+      return res.json({
+        code: 1,
+        msg: '用户名或密码错误'
+      })
+    }
+  )
+})
 Router.get('/list', (req, res) => {
-    User.find({}, (err, doc) => {
-        res.json(doc)
-    })
+  // User.remove({}, (err, doc) => {})
+  User.find({}, (err, doc) => {
+    res.json(doc)
+  })
 })
 Router.get('/info', (req, res) => {
+  const {
+    userId
+  } = req.cookies
+  if (!userId) {
     return res.json({
-        code: 1
+      code: 1
     })
+  }
+  User.findById(userId, _filter, (err, doc) => {
+    if (err) return res.json({
+      code: 1
+    })
+    return res.json({
+      code: 0,
+      data: doc
+    })
+  })
 })
+
+function saltMd5(pwd) {
+  const salt = 'chenzizhao.love.sangdongmei@#$'
+  return util.md5(util.md5(pwd + salt))
+}
 module.exports = Router
