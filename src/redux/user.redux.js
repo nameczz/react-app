@@ -1,42 +1,31 @@
 import axios from 'axios'
 import utils from '../utils'
-const REGISTER_SUCCESS = 'REGISTER_SUCCESS'
+const AUTH_SUCCESS = 'AUTH_SUCCESS'
 const REGISTER_FAIL = 'REGISTER_FAIL'
-const LOGIN_SUCCESS = 'LOGIN_SUCCESS'
 const SAVE_USER_STATE = 'SAVE_USER_STATE'
 const initState = {
   redirectTo: '',
   user: '',
   type: '',
-  isAuth: false,
   errMsg: ''
 }
 
 // reducer 需要在外部createStore
 export function user(state = initState, action) {
   switch (action.type) {
-    case REGISTER_SUCCESS:
+    case AUTH_SUCCESS:
       return { ...state,
         errMsg: '',
-        isAuth: true,
         redirectTo: utils.getRedirectPath(action.data),
         ...action.data
-      }
-    case LOGIN_SUCCESS:
-      return { ...state,
-        ...action.data,
-        isAuth: true,
-        errMsg: ''
       }
     case SAVE_USER_STATE:
       return { ...state,
         ...action.data,
-        isAuth: true,
         errMsg: ''
       }
     case REGISTER_FAIL:
       return { ...state,
-        isAuth: false,
         redirectTo: '',
         errMsg: action.msg
       }
@@ -45,16 +34,10 @@ export function user(state = initState, action) {
   }
 }
 
-function loginSuccess(data) {
-  return {
-    type: LOGIN_SUCCESS,
-    data
-  }
-}
 // 内部函数
-function registerSuccess(data) {
+function authSuccess(data) {
   return {
-    type: REGISTER_SUCCESS,
+    type: AUTH_SUCCESS,
     data
   }
 }
@@ -83,7 +66,7 @@ export function login({
       })
       .then(res => {
         if (res.status === 200 && res.data.code === 0) {
-          dispatch(loginSuccess(res.data.data))
+          dispatch(authSuccess(res.data.data))
         } else {
           dispatch(fail('帐号或密码错误'))
         }
@@ -111,13 +94,26 @@ export function register({
       })
       .then(res => {
         if (res.status === 200 && res.data.code === 0) {
-          dispatch(registerSuccess({
+          dispatch(authSuccess({
             username,
             pwd,
             type
           }))
         } else {
           dispatch(fail('注册失败'))
+        }
+      })
+  }
+}
+
+export function update(data) {
+  return dispatch => {
+    axios.post('/user/update', data)
+      .then(res => {
+        if (res.status === 200 && res.data.code === 0) {
+          dispatch(authSuccess(res.data.data))
+        } else {
+          dispatch(fail('帐号或密码错误'))
         }
       })
   }

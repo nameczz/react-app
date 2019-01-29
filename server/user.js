@@ -8,7 +8,6 @@ const _filter = {
   __v: 0
 }
 Router.post('/register', (req, res) => {
-  console.log(req.body)
   const {
     username,
     pwd,
@@ -76,6 +75,31 @@ Router.post('/login', (req, res) => {
       })
     }
   )
+})
+Router.post('/update', (req, res) => {
+  const {
+    userId
+  } = req.cookies
+  if (!userId) {
+    return res.json({
+      code: 1
+    })
+  }
+  User.findByIdAndUpdate(userId, req.body, (err, doc) => {
+    if (err) {
+      res.json({
+        code: 1
+      })
+    }
+    const data = Object.assign({}, {
+      user: doc.user,
+      type: doc.type
+    }, res.body)
+    return res.json({
+      code: 0,
+      data
+    })
+  })
 })
 Router.get('/list', (req, res) => {
   // User.remove({}, (err, doc) => {})
