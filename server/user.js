@@ -94,7 +94,7 @@ Router.post('/update', (req, res) => {
     const data = Object.assign({}, {
       user: doc.user,
       type: doc.type
-    }, res.body)
+    }, req.body)
     return res.json({
       code: 0,
       data
@@ -103,8 +103,17 @@ Router.post('/update', (req, res) => {
 })
 Router.get('/list', (req, res) => {
   // User.remove({}, (err, doc) => {})
-  User.find({}, (err, doc) => {
-    res.json(doc)
+  const {
+    type
+  } = req.query
+
+  User.find({
+    type
+  }, (err, doc) => {
+    res.json({
+      code: 0,
+      data: doc
+    })
   })
 })
 Router.get('/info', (req, res) => {

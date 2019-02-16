@@ -23,7 +23,7 @@ class AvatarSelector extends React.Component {
       'woman',
       'zebra'
     ].map(v => ({
-      icon: require(`./img/${v}.png`),
+      icon: require(`../img/${v}.png`),
       text: v
     }))
     const choosedAvatar = this.state.icon ? (

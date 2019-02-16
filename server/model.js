@@ -30,6 +30,9 @@ const models = {
     },
     desc: {
       type: String
+    },
+    position: {
+      type: String
     }
   },
   chat: {}
