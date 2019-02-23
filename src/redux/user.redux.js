@@ -3,6 +3,7 @@ import utils from '../utils'
 const AUTH_SUCCESS = 'AUTH_SUCCESS'
 const REGISTER_FAIL = 'REGISTER_FAIL'
 const SAVE_USER_STATE = 'SAVE_USER_STATE'
+const CLEAR_USER_STATE = 'CLEAR_USER_STATE'
 const initState = {
   redirectTo: '',
   user: '',
@@ -14,20 +15,27 @@ const initState = {
 export function user(state = initState, action) {
   switch (action.type) {
     case AUTH_SUCCESS:
-      return { ...state,
+      return {
+        ...state,
         errMsg: '',
         redirectTo: utils.getRedirectPath(action.data),
         ...action.data
       }
     case SAVE_USER_STATE:
-      return { ...state,
+      return {
+        ...state,
         ...action.data,
         errMsg: ''
       }
     case REGISTER_FAIL:
-      return { ...state,
+      return {
+        ...state,
         redirectTo: '',
         errMsg: action.msg
+      }
+    case CLEAR_USER_STATE:
+      return {
+        ...initState,
       }
     default:
       return state
@@ -116,5 +124,13 @@ export function update(data) {
           dispatch(fail('帐号或密码错误'))
         }
       })
+  }
+}
+
+export function clearUserState() {
+  return dispatch => {
+    dispatch({
+      type: CLEAR_USER_STATE
+    })
   }
 }

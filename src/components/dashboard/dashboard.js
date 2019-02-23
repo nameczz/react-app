@@ -3,18 +3,11 @@ import { connect } from 'react-redux'
 import { NavBar } from 'antd-mobile'
 import Footer from '../footer/footer'
 import Boss from "../boss/boss";
+import Genius from '../genius/genius'
+import User from '../user/user'
 import { Switch, Route } from 'react-router-dom'
-// function Boss () {
-//   return <h2>BOSS 首页</h2>
-// }
-function genius () {
-  return <h2>牛人首页</h2>
-}
 function msg () {
   return <h2>msg首页</h2>
-}
-function me () {
-  return <h2>me首页</h2>
 }
 @connect(state => state)
 class Dashboard extends React.Component {
@@ -27,7 +20,7 @@ class Dashboard extends React.Component {
         text: '牛人',
         icon: 'boss',
         title: '牛人列表',
-        component: genius,
+        component: Genius,
         hide: user.type === 'genius'
       },
       {
@@ -50,7 +43,7 @@ class Dashboard extends React.Component {
         text: '我',
         icon: 'boss',
         title: '个人中心',
-        component: me
+        component: User
       }
     ]
     return (
