@@ -1,4 +1,4 @@
-function getRedirectPath({
+export function getRedirectPath({
   type,
   avatar
 }) {
@@ -7,6 +7,6 @@ function getRedirectPath({
   return url
 }
 
-export default {
-  getRedirectPath
+export function getChatId(userId, targetId) {
+  return [userId, targetId].sort().join('_')
 }

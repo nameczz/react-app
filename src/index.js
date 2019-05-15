@@ -11,6 +11,7 @@ import Reducers from './reducers'
 import { Provider } from 'react-redux'
 import BossInfo from './pages/bossInfo'
 import GeniusInfo from './pages/geniusInfo'
+import Chat from './components/chat/chat'
 import Dashboard from './components/dashboard/dashboard'
 const store = createStore(
   Reducers,
@@ -30,6 +31,7 @@ ReactDOM.render(
           <Route path='/geniusinfo' component={GeniusInfo} />
           <Route path='/login' component={Login} />
           <Route path='/register' component={Register} />
+          <Route path='/chat/:userId' component={Chat}></Route>
           <Route component={Dashboard} />
         </Switch>
       </div>

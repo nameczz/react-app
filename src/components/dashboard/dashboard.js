@@ -2,15 +2,26 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { NavBar } from 'antd-mobile'
 import Footer from '../footer/footer'
-import Boss from "../boss/boss";
+import Boss from '../boss/boss'
 import Genius from '../genius/genius'
 import User from '../user/user'
 import { Switch, Route } from 'react-router-dom'
+import { getMsgList, receiveMsg } from '../../redux/message.redux'
+
 function msg () {
   return <h2>msg首页</h2>
 }
-@connect(state => state)
+@connect(
+  state => state,
+  { getMsgList, receiveMsg }
+)
 class Dashboard extends React.Component {
+  componentDidMount () {
+    if (!this.props.chat.chatMsg.length) {
+      this.props.getMsgList()
+      this.props.receiveMsg()
+    }
+  }
   render () {
     const { pathname } = this.props.location
     const user = this.props.user
@@ -36,7 +47,8 @@ class Dashboard extends React.Component {
         text: 'Message',
         icon: 'boss',
         title: '消息列表',
-        component: msg
+        component: msg,
+        unread: this.props.chat.unread
       },
       {
         path: '/me',
@@ -51,7 +63,7 @@ class Dashboard extends React.Component {
         <NavBar className='fixed-header' mode='hard'>
           {navList.find(v => v.path === pathname).title}
         </NavBar>
-        <div style={{ 'marginTop': '45px' }}>
+        <div style={{ marginTop: '45px' }}>
           <Switch>
             {navList.map(v => (
               <Route component={v.component} path={v.path} key={v.path} />

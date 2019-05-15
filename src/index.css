@@ -21,3 +21,23 @@
 .page-content {
     padding: 45px 45px;
 }
+
+#chat-page .chat-me .am-list-extra {
+    flex-basis: auto;
+}
+
+#chat-page .chat-me .am-list-content {
+    padding-right: 15px;
+    text-align: right;
+}
+
+#chat-page .am-list {
+    margin-top: 45px;
+}
+
+.stick-footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    z-index: 10;
+}

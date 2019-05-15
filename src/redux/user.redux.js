@@ -1,5 +1,5 @@
 import axios from 'axios'
-import utils from '../utils'
+import {getRedirectPath} from '../utils'
 const AUTH_SUCCESS = 'AUTH_SUCCESS'
 const REGISTER_FAIL = 'REGISTER_FAIL'
 const SAVE_USER_STATE = 'SAVE_USER_STATE'
@@ -18,7 +18,7 @@ export function user(state = initState, action) {
       return {
         ...state,
         errMsg: '',
-        redirectTo: utils.getRedirectPath(action.data),
+        redirectTo: getRedirectPath(action.data),
         ...action.data
       }
     case SAVE_USER_STATE:

@@ -11,6 +11,7 @@ class NavLinkBar extends React.Component {
   render () {
     const navList = this.props.data.filter(v => !v.hide)
     const { pathname } = this.props.location
+
     return (
       <div>
         <TabBar>
@@ -21,6 +22,7 @@ class NavLinkBar extends React.Component {
               icon={{ uri: require('./list.png') }}
               selectedIcon={{ uri: require('./list.png') }}
               selected={pathname === v.path}
+              badge={v.unread || 0}
               onPress={() => {
                 this.props.history.push(v.path)
               }}
