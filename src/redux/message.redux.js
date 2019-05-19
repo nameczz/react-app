@@ -52,6 +52,7 @@ export function getMsgList() {
         users
       } = res.data
       if (code === 0) {
+        // getstate 获取redux所有数据
         const userId = getState().user._id
         dispatch({
           type: MSG_LIST,

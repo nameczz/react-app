@@ -1,5 +1,5 @@
 import React from 'react'
-import { List, InputItem, NavBar, Icon } from 'antd-mobile'
+import { List, InputItem, NavBar, Icon,Grid } from 'antd-mobile'
 import { connect } from 'react-redux'
 import { getMsgList, sendMsg, receiveMsg } from '../../redux/message.redux'
 import { withRouter } from 'react-router-dom'
@@ -13,13 +13,21 @@ import { getChatId } from '../../utils'
 class ChatUser extends React.Component {
   constructor (props) {
     super(props)
-    this.state = { text: '', msg: [] }
+    this.state = { text: '', showEmoji: false,  }
   }
   componentDidMount () {
     if (!this.props.chat.chatMsg.length) {
       this.props.getMsgList()
       this.props.receiveMsg()
     }
+
+    this.fixGrid()
+
+  }
+  fixGrid(){
+    setTimeout(() => {
+      window.dispatchEvent(new Event('resize'))
+    }, 0);
   }
   send () {
     const from = this.props.user._id
@@ -29,6 +37,11 @@ class ChatUser extends React.Component {
     this.setState({ text: '' })
   }
   render () {
+    const emoji = '😀 😁 😂 🤣 😃 😄 😅 😆 😉 😊 😋 😎 😍 😘 🥰 😗 😙 😚 ☺️ 🙂 🤗 🤩 🤔 🤨 😐 😑 😶 🙄 😏 😣 😥 😮 🤐 😯 😪 😫 😴 😌 😛 😜 😝 🤤 😒 😓 😔 😕 🙃 🤑 😲 ☹️ 🙁 😖 😞 😟 😤 😢 😭 😦 😧 😨 😩 🤯 😬 😰 😱 🥵 🥶 😳 🤪 😵 😡 😠 🤬 😷 🤒 🤕 🤢 🤮 🤧 😇 🤠 🤡 🥳 🥴 🥺 🤥 🤫 🤭 🧐 🤓 😈 👿 👹 👺 💀 👻 👽 🤖 💩 😺 😸 😹 😻 😼 😽 🙀 😿 😾'
+                  .split(' ')
+                  .filter(v=>v)
+                  .map(v=>{return {text:v}})
+                  
     const chatUserId = this.props.match.params.userId
     const users = this.props.chat.users
     const Item = List.Item
@@ -65,9 +78,42 @@ class ChatUser extends React.Component {
               placeholder='请输入'
               value={this.state.text}
               onChange={v => this.setState({ text: v })}
-              extra={<span onClick={v => this.send()}>发送</span>}
+              extra={
+                <div>
+                  <span
+                    style={{marginRight:15}}
+                    role="img"
+                    aria-label="smile"
+                    onClick={v=>{
+                      this.setState({
+                        showEmoji: !this.state.showEmoji
+                      })
+                      this.fixGrid()
+                    }}
+                    > 😂</span>
+                  <span onClick={v => {
+                    this.send()
+                    this.setState({showEmoji:false})
+                  }}>发送</span>
+                </div>
+              }
             />
           </List>
+          {
+            this.state.showEmoji ?
+            <Grid data={emoji}
+              columnNum={9}
+              carouselMaxRow={4}
+              isCarousel={true}
+              onClick={v=>{
+                console.log(v)
+                this.setState({
+                  text: this.state.text + v.text
+                })
+              }}
+            /> : null
+          }
+          
         </div>
       </div>
     )

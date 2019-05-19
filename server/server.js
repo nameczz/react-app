@@ -22,7 +22,8 @@ io.on('connection', function (socket) {
             chatid,
             from,
             to,
-            content: msg
+            content: msg,
+            create_time: new Date().getTime()
         }, function (err, doc) {
             console.log(doc)
             io.emit('recvmsg', Object.assign({}, doc._doc))

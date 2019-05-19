@@ -4,13 +4,11 @@ import { NavBar } from 'antd-mobile'
 import Footer from '../footer/footer'
 import Boss from '../boss/boss'
 import Genius from '../genius/genius'
+import Message from '../message/index'
 import User from '../user/user'
 import { Switch, Route } from 'react-router-dom'
 import { getMsgList, receiveMsg } from '../../redux/message.redux'
 
-function msg () {
-  return <h2>msg首页</h2>
-}
 @connect(
   state => state,
   { getMsgList, receiveMsg }
@@ -47,7 +45,7 @@ class Dashboard extends React.Component {
         text: 'Message',
         icon: 'boss',
         title: '消息列表',
-        component: msg,
+        component: Message,
         unread: this.props.chat.unread
       },
       {
